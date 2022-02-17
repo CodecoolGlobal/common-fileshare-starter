@@ -1,5 +1,6 @@
 package com.codecool.fileshare.service;
 
+import com.codecool.fileshare.dto.ImageBase64Model;
 import com.codecool.fileshare.dto.ImageDTO;
 import com.codecool.fileshare.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,17 +25,18 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public String getImage(String UUIDString){
+    public ImageBase64Model getImage(String UUIDString){
         UUID search = UUID.fromString(UUIDString);
-        return DatatypeConverter.printBase64Binary(imageRepository.getById(search).getContent());
+        String s = Base64.getEncoder().encodeToString(imageRepository.getByteById(search));
+        System.out.println(s);
+        ImageBase64Model result = new ImageBase64Model(s);
+        return result;
     }
-    public String storeImage(String category, String string){
-        String cleanString = string.substring(3,string.length()-4);
-        String newCleanString = cleanString.replaceAll("%2F","/");
-        System.out.println(cleanString);
+    public String storeImage(String category, ImageBase64Model string){
+        System.out.println(string.getContent());
         ImageDTO teszt = new ImageDTO(category,
-                (DatatypeConverter.parseBase64Binary(newCleanString)),
-                getExtension(string.charAt(0)));
+                Base64.getDecoder().decode(string.getContent()),
+                getExtension(string.getContent().charAt(0)));
        imageRepository.save(teszt);
 
        return teszt.getId().toString();

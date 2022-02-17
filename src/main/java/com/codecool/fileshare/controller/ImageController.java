@@ -1,6 +1,6 @@
 package com.codecool.fileshare.controller;
 
-import com.codecool.fileshare.dto.ImageDTO;
+import com.codecool.fileshare.dto.ImageBase64Model;
 import com.codecool.fileshare.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +17,12 @@ public class ImageController {
     }
 
     @PostMapping ("/{category}")
-    public String storeImage(@PathVariable("category") String category, @RequestBody String string){
+    public String storeImage(@PathVariable("category") String category, @RequestBody ImageBase64Model string){
         return imageService.storeImage(category,string);
     }
 
     @GetMapping("/{uuid}")
-    public String getImage(@PathVariable("uuid") String uuid){
+    public ImageBase64Model getImage(@PathVariable("uuid") String uuid){
         return imageService.getImage(uuid);
     }
 }
