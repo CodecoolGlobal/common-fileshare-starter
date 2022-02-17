@@ -1,6 +1,12 @@
 package com.codecool.fileshare.repository;
 
-public interface ImageRepository {
-    public String storeImage(String category, String content);
-    public String readImage(String uuid);
+import com.codecool.fileshare.dto.ImageDTO;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
+
+@Repository
+public interface ImageRepository extends JpaRepository<ImageDTO, UUID>{
 }

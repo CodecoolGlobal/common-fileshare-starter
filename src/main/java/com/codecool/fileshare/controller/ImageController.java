@@ -6,19 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/images")
+@RequestMapping(path = "/images")
+
 public class ImageController {
+    private final ImageService imageService;
 
     @Autowired
-    ImageService imageService;
+    public ImageController(ImageService imageService) {
+        this.imageService = imageService;
+    }
 
-    @PostMapping("/{category}")
-    public String storeImage(@RequestBody ImageDTO imageDTO, @PathVariable("category") String category){
-        return imageService.storeImage(imageDTO,category);
+    @PostMapping ("/{category}")
+    public String storeImage(@PathVariable("category") String category, @RequestBody String string){
+        return imageService.storeImage(category,string);
     }
 
     @GetMapping("/{uuid}")
-    public ImageDTO getImage(@PathVariable("uuid") String uuid){
+    public String getImage(@PathVariable("uuid") String uuid){
         return imageService.getImage(uuid);
     }
 }
